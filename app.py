@@ -73,5 +73,9 @@ if st.button("Analyze"):
         counts = (df_res.groupby(["aspect", "sentiment"]).size()
                   .unstack(fill_value=0))
         st.subheader("Aspect summary")
-        st.bar_chart(counts)
+      for col in ["positive", "negative", "neutral"]:
+    if col not in counts:
+        counts[col] = 0
+counts = counts[["positive", "negative", "neutral"]]
+st.bar_chart(counts, color=["#2e7d32", "#c62828", "#757575"])
         st.dataframe(df_res)
