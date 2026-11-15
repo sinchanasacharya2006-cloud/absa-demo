@@ -67,15 +67,15 @@ if st.button("Analyze"):
             f'{r["aspect"]}: {r["sentiment"]}</span>' for r in res)
         st.markdown(f"**{rev}**")
         st.markdown(tags or "_no aspects found_", unsafe_allow_html=True)
-    if rows:
-        st.caption("Faded tags = low confidence (below 0.6)")
-        df_res = pd.DataFrame(rows)
-        counts = (df_res.groupby(["aspect", "sentiment"]).size()
-                  .unstack(fill_value=0))
-        st.subheader("Aspect summary")
-      for col in ["positive", "negative", "neutral"]:
-          if col not in counts:
-              counts[col] = 0
-      counts = counts[["positive", "negative", "neutral"]]
-      st.bar_chart(counts, color=["#2e7d32", "#c62828", "#757575"])
-        st.dataframe(df_res)
+        if rows:
+            st.caption("Faded tags = low confidence (below 0.6)")
+            df_res = pd.DataFrame(rows)
+            counts = (df_res.groupby(["aspect", "sentiment"]).size()
+                      .unstack(fill_value=0))
+            for col in ["positive", "negative", "neutral"]:
+                if col not in counts:
+                    counts[col] = 0
+            counts = counts[["positive", "negative", "neutral"]]
+            st.subheader("Aspect summary")
+            st.bar_chart(counts, color=["#2e7d32", "#c62828", "#757575"])
+            st.dataframe(df_res)
